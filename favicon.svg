@@ -1,0 +1,13 @@
+<svg width="64" height="64" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer circle - medium beige -->
+  <circle cx="100" cy="100" r="95" fill="#D4C4B0"/>
+  
+  <!-- Inner circle - lighter beige -->
+  <circle cx="100" cy="100" r="82" fill="#E8DDD4"/>
+  
+  <!-- Text: SINCE 2023 - smaller to make room for main text -->
+  <text x="100" y="68" font-family="Arial, sans-serif" font-size="10" font-weight="600" fill="#8B6F47" text-anchor="middle" letter-spacing="2.5">SINCE 2023</text>
+  
+  <!-- Main text: S. A. G. - optimized for readability -->
+  <text x="100" y="130" font-family="Georgia, serif" font-size="52" font-weight="700" fill="#6B5435" text-anchor="middle" letter-spacing="3">S. A. G.</text>
+</svg>

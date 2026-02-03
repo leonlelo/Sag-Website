@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="S.A.G. - Sewingstudio, Artisanbakery, Giftshop med SAGPARKEN Pizzeria på Harestua. Autentisk pizza og håndverksprodukter siden 2023.">
+    <title>S.A.G. - SAGPARKEN Pizzeria</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="logo.svg">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <a href="#home" class="nav__logo-link">
+                    <span class="nav__logo-text">S.A.G.</span>
+                </a>
+            </div>
+            <ul class="nav__menu" id="nav-menu">
+                <li class="nav__item">
+                    <a href="#home" class="nav__link">Forside</a>
+                </li>
+                <li class="nav__item nav__item--dropdown">
+                    <span class="nav__link nav__link--no-href">
+                        Meny
+                        <i class="fas fa-chevron-down nav__dropdown-icon"></i>
+                    </span>
+                    <ul class="nav__dropdown">
+                        <li class="nav__dropdown-item">
+                            <a href="#menu" class="nav__dropdown-link">Pizza</a>
+                        </li>
+                        <li class="nav__dropdown-item">
+                            <a href="#salads" class="nav__dropdown-link">Salater</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav__item">
+                    <a href="#hours" class="nav__link">Åpningstider</a>
+                </li>
+                <li class="nav__item">
+                    <a href="#contact" class="nav__link">Kontakt</a>
+                </li>
+            </ul>
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero__container container">
+            <div class="hero__content">
+                <div class="hero__logo">
+                    <img src="logo.svg" alt="S.A.G. Logo" class="logo-large">
+                    <p class="established">EST. 2023</p>
+                </div>
+                <h1 class="hero__title">SAGPARKEN Pizzeria</h1>
+                <p class="hero__description">
+                    Velkommen til S.A.G. – hvor håndverk møter autentisk smak. 
+                    Opplev vår unike kombinasjon av pizzeria, syatelier, bakeri og gaveshop på Harestua.
+                </p>
+                <a href="#menu" class="btn btn--primary">Se vår meny</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu section" id="menu">
+        <div class="container">
+            <h2 class="section__title">Pizzaer</h2>
+            <p class="section__subtitle">30cm - Alle pizzaer er håndlaget med ferske ingredienser</p>
+            <div class="menu__grid">
+                <!-- Pizza 1 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 1</span>
+                        <span class="menu__name">MARGHERITA</span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, BASILIKUM</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">220,-</div>
+                </div>
+
+                <!-- Pizza 2 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 2</span>
+                        <span class="menu__name">HVIT PARMA</span>
+                    </div>
+                    <p class="menu__ingredients">HVITLØKSOLJE, MOZZARELLA, PARMESAN, PARMASKINKE, BABY LEAF</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">230,-</div>
+                </div>
+
+                <!-- Pizza 3 -->
+                <div class="menu__card hot">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 3</span>
+                        <span class="menu__name">SPEKEPØLSE <span class="hot-badge">HOT</span></span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, SLEGGE FRA ASK GÅRD, FERSK JALAPEÑO, RØDLØK, URTER</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK, SULFITTER</p>
+                    <div class="menu__price">240,-</div>
+                </div>
+
+                <!-- Pizza 4 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 4</span>
+                        <span class="menu__name">HVIT SPEKEPØLSE</span>
+                    </div>
+                    <p class="menu__ingredients">HVITLØKSDRESSING, MOZZARELLA, JÅLA FRA ASK GÅRD, RØDLØK, OLIVEN, PARMESAN, URTER</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK, SULFITTER</p>
+                    <div class="menu__price">230,-</div>
+                </div>
+
+                <!-- Pizza 5 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 5</span>
+                        <span class="menu__name">PARMA</span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, PARMASKINKE, PARMESAN, RUCCOLA, PINJEKJERNER</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">230,-</div>
+                </div>
+
+                <!-- Pizza 6 -->
+                <div class="menu__card hot">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 6</span>
+                        <span class="menu__name">KYLLING BBQ <span class="hot-badge">HOT</span></span>
+                    </div>
+                    <p class="menu__ingredients">BBQ DRESSING, MOZZARELLA, KYLLING, FERSK JALAPEÑO, RØDLØK, BASILIKUM</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">240,-</div>
+                </div>
+
+                <!-- Pizza 7 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 7</span>
+                        <span class="menu__name">SKINKE</span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, SKINKE, AROMASOPP</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">220,-</div>
+                </div>
+
+                <!-- Pizza 8 -->
+                <div class="menu__card hot">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 8</span>
+                        <span class="menu__name">N'DUJA <span class="hot-badge">HOT</span></span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, N'DUJA, KYLLING, FERSK SPINAT, GUL LØK, OLIVEN</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">250,-</div>
+                </div>
+
+                <!-- Pizza 9 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 9</span>
+                        <span class="menu__name">BIFF BLÅMUGG</span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, BIFF, BLÅMUGGOST, AROMASOPP, PARMESAN, TYTTEBÆR, URTER</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">250,-</div>
+                </div>
+
+                <!-- Pizza 10 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__number">NO 10</span>
+                        <span class="menu__name">VEGETAR</span>
+                    </div>
+                    <p class="menu__ingredients">TOMATSAUS, MOZZARELLA, CHERRYTOMAT, OLIVEN, AROMASOPP, PARMESAN, RUCCOLA</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">220,-</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Salads Section -->
+    <section class="menu section" id="salads">
+        <div class="container">
+            <h2 class="section__title">Salater</h2>
+            <p class="section__subtitle">Ferske salater med brød</p>
+            <div class="menu__grid">
+                <!-- Salad 1 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__name">PROTEINBOWL</span>
+                    </div>
+                    <p class="menu__ingredients">KYLLING, GRØNNKÅLMIX, COTTAGE CHEESE, EGG, AVOKADO, KIKERTER</p>
+                    <p class="menu__allergens">INNEHOLDER: MELK, EGG</p>
+                    <div class="menu__price">185,-</div>
+                </div>
+
+                <!-- Salad 2 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__name">PARMASALAT m/brød</span>
+                    </div>
+                    <p class="menu__ingredients">PARMASKINKE, SALAT, TOMAT, AVOCADO, OLIVEN, FERSK MOZZARELLA, M/HVITLØKSDRESSING</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK</p>
+                    <div class="menu__price">195,-</div>
+                </div>
+
+                <!-- Salad 3 -->
+                <div class="menu__card">
+                    <div class="menu__header">
+                        <span class="menu__name">CÆSAR SALAT m/brød</span>
+                    </div>
+                    <p class="menu__ingredients">KYLLING, RØDLØK, EGG, SALAT, TOMAT, PARMESAN, M/CÆSARDRESSING</p>
+                    <p class="menu__allergens">INNEHOLDER: HVETE, MELK, EGG, SENNEP</p>
+                    <div class="menu__price">205,-</div>
+                </div>
+
+                <!-- Salad 4 -->
+                <div class="menu__card hot">
+                    <div class="menu__header">
+                        <span class="menu__name">SPICY KYLLINGSALAT m/brød <span class="hot-badge">HOT</span></span>
+                    </div>
+                    <p class="menu__ingredients">KYLLING, AVOKADO, SALAT, FERSK JALAPEÑO, SYLTET RØDLØK, MANGO, M/HVITLØKSDRESSING OG TORTILLACHIPS</p>
+                    <p class="menu__allergens">INNEHOLDER: MELK, HVETE</p>
+                    <div class="menu__price">205,-</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hours Section -->
+    <section class="hours section" id="hours">
+        <div class="container">
+            <h2 class="section__title">Åpningstider</h2>
+            <p class="section__subtitle">Velkommen til oss på Harestua</p>
+            <div class="hours__content">
+                <div class="hours__card">
+                    <div class="hours__item">
+                        <span class="hours__day">Onsdag</span>
+                        <span class="hours__time">11:00 - 20:00</span>
+                    </div>
+                    <div class="hours__item">
+                        <span class="hours__day">Torsdag</span>
+                        <span class="hours__time">11:00 - 20:00</span>
+                    </div>
+                    <div class="hours__item">
+                        <span class="hours__day">Fredag</span>
+                        <span class="hours__time">11:00 - 22:00</span>
+                    </div>
+                    <div class="hours__item">
+                        <span class="hours__day">Lørdag</span>
+                        <span class="hours__time">11:00 - 22:00</span>
+                    </div>
+                    <div class="hours__item">
+                        <span class="hours__day">Søndag</span>
+                        <span class="hours__time">11:00 - 20:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact section" id="contact">
+        <div class="container">
+            <h2 class="section__title">Kontakt oss</h2>
+            <p class="section__subtitle">Ta kontakt for bestillinger av bord eller spørsmål</p>
+            <div class="contact__container">
+                <div class="contact__info">
+                    <div class="contact__item">
+                        <div class="contact__icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact__details">
+                            <h3>Telefon</h3>
+                            <p><span class="phone-text">466 73 269</span><a href="tel:46673269" class="contact__link phone-link" style="display: none;">466 73 269</a></p>
+                        </div>
+                    </div>
+                    <div class="contact__item">
+                        <div class="contact__icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact__details">
+                            <h3>E-post</h3>
+                            <p><span class="email-text">post@s-a-g.no</span><a href="mailto:post@s-a-g.no" class="contact__link email-link" style="display: none;">post@s-a-g.no</a></p>
+                        </div>
+                    </div>
+                    <div class="contact__item">
+                        <div class="contact__icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <div class="contact__details">
+                            <h3>Instagram</h3>
+                            <p><a href="https://instagram.com/s.a.g_no" target="_blank" rel="noopener noreferrer" class="contact__link">@s.a.g_no</a></p>
+                        </div>
+                    </div>
+                    <div class="contact__item">
+                        <div class="contact__icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact__details">
+                            <h3>Adresse</h3>
+                            <p><a href="https://www.google.com/maps/search/?api=1&query=Vannebos+veg+205,+Harestua+2743" target="_blank" rel="noopener noreferrer" class="contact__link">Vannebos veg 205<br>Harestua 2743</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3 class="footer__title">S.A.G.</h3>
+                    <p class="footer__description">
+                        Sewingstudio, Artisanbakery, Giftshop<br>
+                        SAGPARKEN Pizzeria
+                    </p>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Åpningstider</h4>
+                    <ul class="footer__list">
+                        <li>Onsdag - Torsdag: 11:00 - 20:00</li>
+                        <li>Fredag - Lørdag: 11:00 - 22:00</li>
+                        <li>Søndag: 11:00 - 20:00</li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4 class="footer__subtitle">Kontakt</h4>
+                    <ul class="footer__list">
+                        <li><i class="fas fa-phone"></i> 466 73 269</li>
+                        <li><i class="fas fa-envelope"></i> post@s-a-g.no</li>
+                        <li><i class="fab fa-instagram"></i> <a href="https://instagram.com/s.a.g_no" target="_blank" rel="noopener noreferrer">@s.a.g_no</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <a href="https://www.google.com/maps/search/?api=1&query=Vannebos+veg+205,+Harestua+2743" target="_blank" rel="noopener noreferrer">Vannebos veg 205, Harestua</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 S.A.G. - SAGPARKEN. Alle rettigheter reservert.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
