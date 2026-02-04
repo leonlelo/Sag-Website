@@ -12,7 +12,14 @@ if (navToggle && navMenu) {
         const isOpening = !navMenu.classList.contains('show');
         
         if (isOpening) {
-            navMenu.classList.add('show');
+            // Ensure menu is visible and trigger animation from top
+            navMenu.style.visibility = 'visible';
+            // Use requestAnimationFrame to ensure smooth animation start
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    navMenu.classList.add('show');
+                });
+            });
             const icon = navToggle.querySelector('i');
             if (icon) {
                 icon.classList.remove('fa-bars');
@@ -30,6 +37,12 @@ if (navToggle && navMenu) {
             if (menuDropdownMenu) {
                 menuDropdownMenu.classList.remove('show');
             }
+            // Hide visibility after animation completes
+            setTimeout(() => {
+                if (!navMenu.classList.contains('show')) {
+                    navMenu.style.visibility = '';
+                }
+            }, 400);
         }
     });
 }
