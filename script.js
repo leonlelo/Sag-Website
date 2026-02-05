@@ -130,7 +130,7 @@ const navLinks = document.querySelectorAll('.nav__link:not(.nav__link--no-href)'
 const dropdownLinks = document.querySelectorAll('.nav__dropdown-link');
 
 function closeMenuAndScroll(target) {
-    if (!navMenu) return;
+    if (!navMenu || !navMenu.classList.contains('show')) return;
     
     // Close dropdown first with smooth animation
     if (menuDropdownMenu && menuDropdownMenu.classList.contains('show')) {
@@ -144,36 +144,57 @@ function closeMenuAndScroll(target) {
         menuDropdownButton.classList.remove('active');
     }
     
-    // Close main menu with smooth animation using CSS animation
-    navMenu.classList.remove('show');
-    navMenu.classList.add('closing');
+    // Update icon first
     const icon = navToggle ? navToggle.querySelector('i') : null;
     if (icon) {
         icon.classList.remove('fa-times');
         icon.classList.add('fa-bars');
     }
     
-    // Remove closing class after animation
-    setTimeout(() => {
-        navMenu.classList.remove('closing');
-    }, 400);
+    // Ensure menu is visible and ready for animation BEFORE starting
+    navMenu.style.visibility = 'visible';
+    navMenu.style.display = 'flex';
+    navMenu.style.willChange = 'transform, opacity';
     
-    // Smooth scroll to target after menu closes
-    if (target) {
-        // Wait for menu close animation to complete (400ms)
-        setTimeout(() => {
-            // Check if mobile
-            const isMobile = window.innerWidth <= 767;
-            const headerOffset = isMobile ? 70 : 80;
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    // Force reflow to ensure styles are applied
+    navMenu.offsetHeight;
+    
+    // Use requestAnimationFrame to ensure smooth animation start on iOS
+    // First frame: prepare for animation
+    requestAnimationFrame(() => {
+        // Second frame: start the closing animation
+        requestAnimationFrame(() => {
+            // Remove show class and add closing class
+            navMenu.classList.remove('show');
+            navMenu.classList.add('closing');
             
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }, 400);
-    }
+            // Remove closing class and reset styles after animation completes
+            setTimeout(() => {
+                navMenu.classList.remove('closing');
+                navMenu.style.willChange = '';
+                if (!navMenu.classList.contains('show')) {
+                    navMenu.style.visibility = 'hidden';
+                }
+            }, 450);
+            
+            // Smooth scroll to target after menu closes
+            if (target) {
+                // Wait for menu close animation to complete (450ms)
+                setTimeout(() => {
+                    // Check if mobile
+                    const isMobile = window.innerWidth <= 767;
+                    const headerOffset = isMobile ? 70 : 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 450);
+            }
+        });
+    });
 }
 
 navLinks.forEach(link => {
