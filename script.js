@@ -23,7 +23,9 @@ if (navToggle && navMenu) {
         const isOpening = !navMenu.classList.contains('show');
         
         if (isOpening) {
-            // Menu always has display:flex, just add show class for animation
+            // Ensure menu is ready before opening
+            navMenu.style.visibility = 'visible';
+            navMenu.style.display = 'flex';
             // Use requestAnimationFrame to ensure smooth animation start
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -35,6 +37,11 @@ if (navToggle && navMenu) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
             }
+            
+            // Check if user is on menu or salads section, and if so, set active on "Meny" button
+            setTimeout(() => {
+                activateNavLink();
+            }, 100);
         } else {
             // Smooth close - menu keeps display:flex, just animates transform/opacity
             navMenu.classList.remove('show');
@@ -55,24 +62,42 @@ if (navToggle && navMenu) {
             if (menuDropdownButton) {
                 menuDropdownButton.classList.remove('active');
             }
-            // Remove closing class after animation
+            // Remove closing class and reset styles after animation
             setTimeout(() => {
                 navMenu.classList.remove('closing');
-            }, 400);
+                // Reset inline styles to allow menu to open again
+                navMenu.style.visibility = '';
+                navMenu.style.display = '';
+                navMenu.style.willChange = '';
+            }, 450);
         }
     };
     
     // Use touchstart for iOS devices, click for others
+    // On touch devices, handle both touchstart and click, but prevent double-firing
+    let touchHandled = false;
+    
     if ('ontouchstart' in window) {
         navToggle.addEventListener('touchstart', (e) => {
+            if (touchHandled) return;
+            touchHandled = true;
             e.preventDefault();
             e.stopPropagation();
             handleMenuToggle(e);
+            // Reset after a short delay to allow click if needed
+            setTimeout(() => {
+                touchHandled = false;
+            }, 300);
         }, { passive: false });
         
-        // Also handle click as fallback
-        navToggle.addEventListener('click', handleMenuToggle);
+        // Also handle click as fallback, but only if touch wasn't handled
+        navToggle.addEventListener('click', (e) => {
+            if (!touchHandled) {
+                handleMenuToggle(e);
+            }
+        });
     } else {
+        // Desktop: just use click
         navToggle.addEventListener('click', handleMenuToggle);
     }
 }
@@ -80,11 +105,27 @@ if (navToggle && navMenu) {
 // Toggle dropdown menu on mobile
 if (menuDropdownButton && menuDropdownMenu && menuDropdown) {
     let touchStartTime = 0;
+    let dropdownTouchHandled = false;
     
     // Handle both touch and click events for better iOS support
     const handleDropdownToggle = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        // Check if we're on mobile and menu is open
+        const isMobile = window.innerWidth <= 767;
+        if (!isMobile) {
+            // On desktop, let CSS hover handle it - don't interfere
+            return;
+        }
+        
+        // Only handle when mobile menu is open
+        if (!navMenu || !navMenu.classList.contains('show')) {
+            return;
+        }
+        
+        // Always prevent default and stop propagation
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         
         // Prevent rapid double-taps on iOS
         const now = Date.now();
@@ -98,8 +139,12 @@ if (menuDropdownButton && menuDropdownMenu && menuDropdown) {
         if (isOpening) {
             menuDropdownMenu.classList.add('show');
             menuDropdown.classList.add('open');
-            // Remove active from all nav links
+            // Remove active from all nav links (including Åpningstider, Kontakt, etc.)
             navLinks.forEach(link => link.classList.remove('active'));
+            // Also remove active from any other elements that might have it
+            document.querySelectorAll('.nav__link.active').forEach(link => {
+                link.classList.remove('active');
+            });
             // Add active to dropdown button when open
             menuDropdownButton.classList.add('active');
         } else {
@@ -110,19 +155,40 @@ if (menuDropdownButton && menuDropdownMenu && menuDropdown) {
         }
     };
     
-    // Use touchstart for iOS devices, click for others
-    if ('ontouchstart' in window) {
-        menuDropdownButton.addEventListener('touchstart', (e) => {
+    // Add event listeners - always add them, but check conditions inside
+    // Use touchstart for better iOS support
+    menuDropdownButton.addEventListener('touchstart', (e) => {
+        const isMobile = window.innerWidth <= 767;
+        if (!isMobile || !navMenu || !navMenu.classList.contains('show')) {
+            return;
+        }
+        
+        if (dropdownTouchHandled) return;
+        dropdownTouchHandled = true;
+        
+        handleDropdownToggle(e);
+        
+        setTimeout(() => {
+            dropdownTouchHandled = false;
+        }, 300);
+    }, { passive: false });
+    
+    // Also handle click as fallback (for devices that fire both)
+    menuDropdownButton.addEventListener('click', (e) => {
+        const isMobile = window.innerWidth <= 767;
+        if (!isMobile || !navMenu || !navMenu.classList.contains('show')) {
+            return;
+        }
+        
+        // Only handle if touch wasn't already handled
+        if (!dropdownTouchHandled) {
+            handleDropdownToggle(e);
+        } else {
+            // If touch was handled, prevent click from doing anything
             e.preventDefault();
             e.stopPropagation();
-            handleDropdownToggle(e);
-        }, { passive: false });
-        
-        // Also handle click as fallback
-        menuDropdownButton.addEventListener('click', handleDropdownToggle);
-    } else {
-        menuDropdownButton.addEventListener('click', handleDropdownToggle);
-    }
+        }
+    });
 }
 
 // Close mobile menu and scroll smoothly when clicking on a link
@@ -171,10 +237,10 @@ function closeMenuAndScroll(target) {
             // Remove closing class and reset styles after animation completes
             setTimeout(() => {
                 navMenu.classList.remove('closing');
+                // Reset all inline styles to allow menu to open again
+                navMenu.style.visibility = '';
+                navMenu.style.display = '';
                 navMenu.style.willChange = '';
-                if (!navMenu.classList.contains('show')) {
-                    navMenu.style.visibility = 'hidden';
-                }
             }, 450);
             
             // Smooth scroll to target after menu closes
@@ -197,29 +263,43 @@ function closeMenuAndScroll(target) {
     });
 }
 
+// Only add click handlers for mobile menu links (when menu is visible)
+// On desktop, the smooth scroll handler below will handle navigation
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
-        if (href && href.startsWith('#')) {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            closeMenuAndScroll(target);
-        } else {
-            closeMenuAndScroll(null);
+        const isMobile = window.innerWidth <= 767;
+        
+        // Only handle if mobile menu is open, or if it's a mobile device
+        if (isMobile && navMenu && navMenu.classList.contains('show')) {
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                closeMenuAndScroll(target);
+            } else {
+                closeMenuAndScroll(null);
+            }
         }
+        // On desktop, let the default behavior or smooth scroll handler work
     });
 });
 
 dropdownLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         const href = link.getAttribute('href');
-        if (href && href.startsWith('#')) {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            closeMenuAndScroll(target);
-        } else {
-            closeMenuAndScroll(null);
+        const isMobile = window.innerWidth <= 767;
+        
+        // Only handle if mobile menu is open, or if it's a mobile device
+        if (isMobile && navMenu && navMenu.classList.contains('show')) {
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                closeMenuAndScroll(target);
+            } else {
+                closeMenuAndScroll(null);
+            }
         }
+        // On desktop, let the default behavior or smooth scroll handler work
     });
 });
 
@@ -249,6 +329,36 @@ function activateNavLink() {
     }
     
     const scrollY = window.pageYOffset;
+    
+    // Check if user is on menu or salads section (these are under "Meny" dropdown)
+    const menuSection = document.querySelector('#menu');
+    const saladsSection = document.querySelector('#salads');
+    let isOnMenuSection = false;
+    
+    if (menuSection) {
+        const menuHeight = menuSection.offsetHeight;
+        const menuTop = menuSection.offsetTop - 100;
+        if (scrollY > menuTop && scrollY <= menuTop + menuHeight) {
+            isOnMenuSection = true;
+        }
+    }
+    
+    if (saladsSection) {
+        const saladsHeight = saladsSection.offsetHeight;
+        const saladsTop = saladsSection.offsetTop - 100;
+        if (scrollY > saladsTop && scrollY <= saladsTop + saladsHeight) {
+            isOnMenuSection = true;
+        }
+    }
+    
+    // If on menu or salads section, set active on "Meny" button
+    if (isOnMenuSection) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        if (menuDropdownButton) {
+            menuDropdownButton.classList.add('active');
+        }
+        return;
+    }
 
     sections.forEach(section => {
         const sectionHeight = section.offsetHeight;
@@ -272,11 +382,13 @@ function activateNavLink() {
 window.addEventListener('scroll', activateNavLink);
 
 // ===== SMOOTH SCROLL FOR ANCHOR LINKS (Desktop) =====
-// This is handled in the mobile menu close function, but we keep this for desktop links
-document.querySelectorAll('a[href^="#"]:not(.nav__dropdown-link):not(.nav__link--no-href)').forEach(anchor => {
-    // Only add if not already handled by mobile menu
-    if (!anchor.closest('.nav__menu')) {
-        anchor.addEventListener('click', function (e) {
+// Handle smooth scroll for desktop navigation links
+document.querySelectorAll('.nav__menu a[href^="#"]:not(.nav__dropdown-link):not(.nav__link--no-href)').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const isMobile = window.innerWidth <= 767;
+        
+        // Only handle on desktop (mobile is handled by closeMenuAndScroll)
+        if (!isMobile) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
@@ -289,8 +401,31 @@ document.querySelectorAll('a[href^="#"]:not(.nav__dropdown-link):not(.nav__link-
                     behavior: 'smooth'
                 });
             }
-        });
-    }
+        }
+    });
+});
+
+// Handle smooth scroll for desktop dropdown links
+document.querySelectorAll('.nav__dropdown-link').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const isMobile = window.innerWidth <= 767;
+        
+        // Only handle on desktop (mobile is handled by closeMenuAndScroll)
+        if (!isMobile) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
 });
 
 // ===== SCROLL ANIMATIONS =====
@@ -347,6 +482,30 @@ function setupContactLinks() {
         if (emailText && emailLink) {
             emailText.style.display = 'inline';
             emailLink.style.display = 'none';
+        }
+    }
+    
+    // Setup footer links (tel: and mailto: only on mobile)
+    const footerPhoneLink = document.querySelector('.footer__list a[href^="tel:"]');
+    const footerEmailLink = document.querySelector('.footer__list a[href^="mailto:"]');
+    
+    if (isMobileDevice()) {
+        // Mobile: keep tel: and mailto: links active
+        if (footerPhoneLink) {
+            footerPhoneLink.href = 'tel:46673269';
+        }
+        if (footerEmailLink) {
+            footerEmailLink.href = 'mailto:post@s-a-g.no';
+        }
+    } else {
+        // Desktop: remove tel: and mailto: functionality
+        if (footerPhoneLink) {
+            footerPhoneLink.href = 'javascript:void(0)';
+            footerPhoneLink.style.cursor = 'text';
+        }
+        if (footerEmailLink) {
+            footerEmailLink.href = 'javascript:void(0)';
+            footerEmailLink.style.cursor = 'text';
         }
     }
 }
