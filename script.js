@@ -512,6 +512,9 @@ function setupContactLinks() {
 
 // ===== INITIALIZE ON LOAD =====
 document.addEventListener('DOMContentLoaded', () => {
+    // Always scroll to top on page load/refresh
+    window.scrollTo(0, 0);
+    
     // Activate nav link on page load
     activateNavLink();
     
@@ -533,4 +536,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 250);
     });
 });
+
+// Also scroll to top on page load (before DOMContentLoaded)
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
+
+// Scroll to top immediately if page is already loaded
+if (document.readyState === 'loading') {
+    window.scrollTo(0, 0);
+} else {
+    window.scrollTo(0, 0);
+}
 
