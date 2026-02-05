@@ -23,9 +23,7 @@ if (navToggle && navMenu) {
         const isOpening = !navMenu.classList.contains('show');
         
         if (isOpening) {
-            // Ensure menu is visible and trigger animation from top
-            navMenu.style.visibility = 'visible';
-            navMenu.style.display = 'flex';
+            // Menu always has display:flex, just add show class for animation
             // Use requestAnimationFrame to ensure smooth animation start
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -38,7 +36,7 @@ if (navToggle && navMenu) {
                 icon.classList.add('fa-times');
             }
         } else {
-            // Smooth close
+            // Smooth close - menu keeps display:flex, just animates transform/opacity
             navMenu.classList.remove('show');
             const icon = navToggle.querySelector('i');
             if (icon) {
@@ -52,13 +50,6 @@ if (navToggle && navMenu) {
             if (menuDropdown) {
                 menuDropdown.classList.remove('open');
             }
-            // Hide visibility after animation completes
-            setTimeout(() => {
-                if (!navMenu.classList.contains('show')) {
-                    navMenu.style.visibility = '';
-                    navMenu.style.display = '';
-                }
-            }, 400);
         }
     };
     
@@ -124,13 +115,7 @@ const navLinks = document.querySelectorAll('.nav__link:not(.nav__link--no-href)'
 const dropdownLinks = document.querySelectorAll('.nav__dropdown-link');
 
 function closeMenuAndScroll(target) {
-    // Ensure menu is visible and has display:flex before starting close animation
-    if (navMenu && navMenu.classList.contains('show')) {
-        navMenu.style.visibility = 'visible';
-        navMenu.style.display = 'flex';
-        // Force reflow to ensure styles are applied
-        navMenu.offsetHeight;
-    }
+    if (!navMenu) return;
     
     // Close dropdown first with smooth animation
     if (menuDropdownMenu && menuDropdownMenu.classList.contains('show')) {
@@ -141,34 +126,18 @@ function closeMenuAndScroll(target) {
     }
     
     // Close main menu with smooth animation
-    // Keep display:flex via inline style while animating
-    // Use requestAnimationFrame to ensure smooth transition
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            if (navMenu) {
-                // Remove show class but keep display:flex for animation
-                navMenu.classList.remove('show');
-                // Ensure display stays flex during animation
-                navMenu.style.display = 'flex';
-            }
-            const icon = navToggle ? navToggle.querySelector('i') : null;
-            if (icon) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-    });
+    // Menu always has display:flex, we just animate transform and opacity
+    navMenu.classList.remove('show');
+    const icon = navToggle ? navToggle.querySelector('i') : null;
+    if (icon) {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+    }
     
     // Smooth scroll to target after menu closes
     if (target) {
-        // Wait for menu close animation to complete (400ms)
+        // Wait for menu close animation to complete (350ms)
         setTimeout(() => {
-            // Hide menu completely after animation
-            if (navMenu && !navMenu.classList.contains('show')) {
-                navMenu.style.visibility = '';
-                navMenu.style.display = '';
-            }
-            
             // Check if mobile
             const isMobile = window.innerWidth <= 767;
             const headerOffset = isMobile ? 70 : 80;
@@ -179,15 +148,7 @@ function closeMenuAndScroll(target) {
                 top: offsetPosition,
                 behavior: 'smooth'
             });
-        }, 400);
-    } else {
-        // If no target, just hide menu after animation
-        setTimeout(() => {
-            if (navMenu && !navMenu.classList.contains('show')) {
-                navMenu.style.visibility = '';
-                navMenu.style.display = '';
-            }
-        }, 400);
+        }, 350);
     }
 }
 

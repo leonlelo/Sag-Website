@@ -867,35 +867,41 @@ button {
         flex-direction: column;
         padding: var(--spacing-lg);
         box-shadow: var(--shadow-lg);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                    visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 999;
         gap: var(--spacing-md);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        display: flex;
         transform: translate3d(0, -100%, 0);
         -webkit-transform: translate3d(0, -100%, 0);
         opacity: 0;
         visibility: hidden;
+        pointer-events: none;
         will-change: transform, opacity;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         transform-origin: top center;
         -webkit-transform-origin: top center;
-        -webkit-perspective: 1000px;
-        perspective: 1000px;
-        display: none;
-        pointer-events: none;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    visibility 0s linear 0.35s;
+        -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                            opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                            visibility 0s linear 0.35s;
     }
     
     .nav__menu.show {
-        display: flex;
         transform: translate3d(0, 0, 0);
         -webkit-transform: translate3d(0, 0, 0);
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                    visibility 0s linear 0s;
+        -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                            opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                            visibility 0s linear 0s;
     }
 
     .nav__item {
