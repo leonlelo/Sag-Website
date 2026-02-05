@@ -249,7 +249,8 @@ function closeMenuAndScroll(target) {
                 setTimeout(() => {
                     // Check if mobile
                     const isMobile = window.innerWidth <= 767;
-                    const headerOffset = isMobile ? 70 : 80;
+                    // Use larger offset on mobile to account for header and ensure proper positioning
+                    const headerOffset = isMobile ? 90 : 80;
                     const elementPosition = target.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                     
@@ -423,6 +424,61 @@ document.querySelectorAll('.nav__dropdown-link').forEach(anchor => {
                     top: offsetPosition,
                     behavior: 'smooth'
                 });
+            }
+        }
+    });
+});
+
+// Handle smooth scroll for "Se vår meny" button and other anchor links
+document.querySelectorAll('a[href^="#"]:not(.nav__dropdown-link):not(.nav__link--no-href):not(.nav__menu a)').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const isMobile = window.innerWidth <= 767;
+                // Use smaller offset on mobile to ensure title is visible
+                // Target the section title instead of the section top
+                const headerOffset = isMobile ? 70 : 80;
+                const sectionTitle = target.querySelector('.section__title');
+                let elementPosition;
+                
+                if (sectionTitle) {
+                    // If section has a title, scroll to show the title
+                    elementPosition = sectionTitle.getBoundingClientRect().top;
+                } else {
+                    // Otherwise use section top
+                    elementPosition = target.getBoundingClientRect().top;
+                }
+                
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                // Use smooth scroll with fallback
+                if ('scrollBehavior' in document.documentElement.style) {
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Fallback for browsers that don't support smooth scroll
+                    const startPosition = window.pageYOffset;
+                    const distance = offsetPosition - startPosition;
+                    const duration = 500;
+                    let start = null;
+                    
+                    function step(timestamp) {
+                        if (!start) start = timestamp;
+                        const progress = timestamp - start;
+                        const percentage = Math.min(progress / duration, 1);
+                        const ease = percentage * (2 - percentage); // ease-out
+                        window.scrollTo(0, startPosition + distance * ease);
+                        if (progress < duration) {
+                            window.requestAnimationFrame(step);
+                        }
+                    }
+                    window.requestAnimationFrame(step);
+                }
             }
         }
     });
