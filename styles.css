@@ -808,6 +808,58 @@ button {
     }
 }
 
+@keyframes menuSlideIn {
+    from {
+        transform: translate3d(0, -100%, 0);
+        -webkit-transform: translate3d(0, -100%, 0);
+        opacity: 0;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes menuSlideIn {
+    from {
+        transform: translate3d(0, -100%, 0);
+        -webkit-transform: translate3d(0, -100%, 0);
+        opacity: 0;
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes menuSlideOut {
+    from {
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+    to {
+        transform: translate3d(0, -100%, 0);
+        -webkit-transform: translate3d(0, -100%, 0);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes menuSlideOut {
+    from {
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+    to {
+        transform: translate3d(0, -100%, 0);
+        -webkit-transform: translate3d(0, -100%, 0);
+        opacity: 0;
+    }
+}
+
 .fade-in {
     animation: fadeInUp 0.6s ease-out;
 }
@@ -882,26 +934,18 @@ button {
         backface-visibility: hidden;
         transform-origin: top center;
         -webkit-transform-origin: top center;
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                    visibility 0s linear 0.35s;
-        -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                            opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                            visibility 0s linear 0.35s;
     }
     
     .nav__menu.show {
-        transform: translate3d(0, 0, 0);
-        -webkit-transform: translate3d(0, 0, 0);
-        opacity: 1;
+        animation: menuSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        -webkit-animation: menuSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         visibility: visible;
         pointer-events: auto;
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                    visibility 0s linear 0s;
-        -webkit-transition: -webkit-transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                            opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-                            visibility 0s linear 0s;
+    }
+    
+    .nav__menu.closing {
+        animation: menuSlideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        -webkit-animation: menuSlideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
     .nav__item {

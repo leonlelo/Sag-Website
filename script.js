@@ -38,6 +38,7 @@ if (navToggle && navMenu) {
         } else {
             // Smooth close - menu keeps display:flex, just animates transform/opacity
             navMenu.classList.remove('show');
+            navMenu.classList.add('closing');
             const icon = navToggle.querySelector('i');
             if (icon) {
                 icon.classList.remove('fa-times');
@@ -50,6 +51,14 @@ if (navToggle && navMenu) {
             if (menuDropdown) {
                 menuDropdown.classList.remove('open');
             }
+            // Remove active from dropdown button when closing
+            if (menuDropdownButton) {
+                menuDropdownButton.classList.remove('active');
+            }
+            // Remove closing class after animation
+            setTimeout(() => {
+                navMenu.classList.remove('closing');
+            }, 400);
         }
     };
     
@@ -89,9 +98,15 @@ if (menuDropdownButton && menuDropdownMenu && menuDropdown) {
         if (isOpening) {
             menuDropdownMenu.classList.add('show');
             menuDropdown.classList.add('open');
+            // Remove active from all nav links
+            navLinks.forEach(link => link.classList.remove('active'));
+            // Add active to dropdown button when open
+            menuDropdownButton.classList.add('active');
         } else {
             menuDropdownMenu.classList.remove('show');
             menuDropdown.classList.remove('open');
+            // Remove active from dropdown button when closed
+            menuDropdownButton.classList.remove('active');
         }
     };
     
@@ -124,19 +139,28 @@ function closeMenuAndScroll(target) {
     if (menuDropdown && menuDropdown.classList.contains('open')) {
         menuDropdown.classList.remove('open');
     }
+    // Remove active from dropdown button when closing
+    if (menuDropdownButton) {
+        menuDropdownButton.classList.remove('active');
+    }
     
-    // Close main menu with smooth animation
-    // Menu always has display:flex, we just animate transform and opacity
+    // Close main menu with smooth animation using CSS animation
     navMenu.classList.remove('show');
+    navMenu.classList.add('closing');
     const icon = navToggle ? navToggle.querySelector('i') : null;
     if (icon) {
         icon.classList.remove('fa-times');
         icon.classList.add('fa-bars');
     }
     
+    // Remove closing class after animation
+    setTimeout(() => {
+        navMenu.classList.remove('closing');
+    }, 400);
+    
     // Smooth scroll to target after menu closes
     if (target) {
-        // Wait for menu close animation to complete (350ms)
+        // Wait for menu close animation to complete (400ms)
         setTimeout(() => {
             // Check if mobile
             const isMobile = window.innerWidth <= 767;
@@ -148,7 +172,7 @@ function closeMenuAndScroll(target) {
                 top: offsetPosition,
                 behavior: 'smooth'
             });
-        }, 350);
+        }, 400);
     }
 }
 
@@ -198,6 +222,11 @@ window.addEventListener('scroll', () => {
 const sections = document.querySelectorAll('section[id]');
 
 function activateNavLink() {
+    // Don't update active links if dropdown is open
+    if (menuDropdownMenu && menuDropdownMenu.classList.contains('show')) {
+        return;
+    }
+    
     const scrollY = window.pageYOffset;
 
     sections.forEach(section => {
@@ -208,6 +237,10 @@ function activateNavLink() {
 
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
             navLinks.forEach(link => link.classList.remove('active'));
+            // Also remove active from dropdown button
+            if (menuDropdownButton) {
+                menuDropdownButton.classList.remove('active');
+            }
             if (navLink) {
                 navLink.classList.add('active');
             }
