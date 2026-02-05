@@ -883,6 +883,13 @@ button {
         backface-visibility: hidden;
         transform-origin: top center;
         -webkit-transform-origin: top center;
+        -webkit-perspective: 1000px;
+        perspective: 1000px;
+        display: none;
+    }
+    
+    .nav__menu.show {
+        display: flex;
     }
 
     .nav__menu.show {
@@ -901,15 +908,30 @@ button {
         padding: var(--spacing-sm) 0;
         display: block;
         width: 100%;
+        -webkit-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     .nav__item--dropdown {
         width: 100%;
     }
+    
+    .nav__item--dropdown .nav__link--no-href {
+        -webkit-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        cursor: pointer;
+    }
 
     .nav__dropdown {
         position: static;
-        transform: translateY(-15px);
+        transform: translate3d(0, -15px, 0);
+        -webkit-transform: translate3d(0, -15px, 0);
         opacity: 0;
         visibility: hidden;
         max-height: 0;
@@ -926,15 +948,24 @@ button {
                     max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                     padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                     margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform, opacity, max-height;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
 
     .nav__dropdown.show {
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
         opacity: 1;
         visibility: visible;
         max-height: 300px;
         margin-top: var(--spacing-sm);
         padding: var(--spacing-sm) 0;
+    }
+    
+    .nav__item--dropdown.open .nav__dropdown-icon {
+        transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
     }
 
     .nav__item--dropdown:hover .nav__dropdown {
@@ -958,9 +989,13 @@ button {
         z-index: 1001;
         position: relative;
         -webkit-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
+        touch-action: manipulation;
         will-change: transform;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     .nav__toggle i {

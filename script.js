@@ -7,13 +7,25 @@ const menuDropdownMenu = document.querySelector('.nav__item--dropdown .nav__drop
 
 // Toggle main mobile menu
 if (navToggle && navMenu) {
-    navToggle.addEventListener('click', (e) => {
+    let lastToggleTime = 0;
+    
+    const handleMenuToggle = (e) => {
+        e.preventDefault();
         e.stopPropagation();
+        
+        // Prevent rapid double-taps on iOS
+        const now = Date.now();
+        if (now - lastToggleTime < 300) {
+            return;
+        }
+        lastToggleTime = now;
+        
         const isOpening = !navMenu.classList.contains('show');
         
         if (isOpening) {
             // Ensure menu is visible and trigger animation from top
             navMenu.style.visibility = 'visible';
+            navMenu.style.display = 'flex';
             // Use requestAnimationFrame to ensure smooth animation start
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -37,23 +49,74 @@ if (navToggle && navMenu) {
             if (menuDropdownMenu) {
                 menuDropdownMenu.classList.remove('show');
             }
+            if (menuDropdown) {
+                menuDropdown.classList.remove('open');
+            }
             // Hide visibility after animation completes
             setTimeout(() => {
                 if (!navMenu.classList.contains('show')) {
                     navMenu.style.visibility = '';
+                    navMenu.style.display = '';
                 }
             }, 400);
         }
-    });
+    };
+    
+    // Use touchstart for iOS devices, click for others
+    if ('ontouchstart' in window) {
+        navToggle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleMenuToggle(e);
+        }, { passive: false });
+        
+        // Also handle click as fallback
+        navToggle.addEventListener('click', handleMenuToggle);
+    } else {
+        navToggle.addEventListener('click', handleMenuToggle);
+    }
 }
 
 // Toggle dropdown menu on mobile
-if (menuDropdownButton && menuDropdownMenu) {
-    menuDropdownButton.addEventListener('click', (e) => {
+if (menuDropdownButton && menuDropdownMenu && menuDropdown) {
+    let touchStartTime = 0;
+    
+    // Handle both touch and click events for better iOS support
+    const handleDropdownToggle = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        menuDropdownMenu.classList.toggle('show');
-    });
+        
+        // Prevent rapid double-taps on iOS
+        const now = Date.now();
+        if (now - touchStartTime < 300) {
+            return;
+        }
+        touchStartTime = now;
+        
+        const isOpening = !menuDropdownMenu.classList.contains('show');
+        
+        if (isOpening) {
+            menuDropdownMenu.classList.add('show');
+            menuDropdown.classList.add('open');
+        } else {
+            menuDropdownMenu.classList.remove('show');
+            menuDropdown.classList.remove('open');
+        }
+    };
+    
+    // Use touchstart for iOS devices, click for others
+    if ('ontouchstart' in window) {
+        menuDropdownButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDropdownToggle(e);
+        }, { passive: false });
+        
+        // Also handle click as fallback
+        menuDropdownButton.addEventListener('click', handleDropdownToggle);
+    } else {
+        menuDropdownButton.addEventListener('click', handleDropdownToggle);
+    }
 }
 
 // Close mobile menu and scroll smoothly when clicking on a link
@@ -64,6 +127,9 @@ function closeMenuAndScroll(target) {
     // Close dropdown first with smooth animation
     if (menuDropdownMenu) {
         menuDropdownMenu.classList.remove('show');
+    }
+    if (menuDropdown) {
+        menuDropdown.classList.remove('open');
     }
     
     // Close main menu with smooth animation
