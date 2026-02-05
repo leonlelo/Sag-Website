@@ -869,7 +869,7 @@ button {
         box-shadow: var(--shadow-lg);
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                     opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                    visibility 0.4s;
+                    visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 999;
         gap: var(--spacing-md);
         overflow-y: auto;
@@ -886,17 +886,16 @@ button {
         -webkit-perspective: 1000px;
         perspective: 1000px;
         display: none;
+        pointer-events: none;
     }
     
     .nav__menu.show {
         display: flex;
-    }
-
-    .nav__menu.show {
         transform: translate3d(0, 0, 0);
         -webkit-transform: translate3d(0, 0, 0);
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
 
     .nav__item {
