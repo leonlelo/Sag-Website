@@ -593,6 +593,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Re-run contact link setup when Sanity has updated the contact section
+document.addEventListener('sanityContentLoaded', () => {
+    setupContactLinks();
+});
+
 // Also scroll to top on page load (before DOMContentLoaded)
 window.addEventListener('load', () => {
     window.scrollTo(0, 0);
